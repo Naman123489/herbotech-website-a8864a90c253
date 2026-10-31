@@ -1,0 +1,189 @@
+openapi: 3.1.0
+info:
+  title: Herbotech Enquiry API
+  version: 1.0.0
+  description: API for handling business enquiries for HERBOTECH HERBAL PVT. LTD.
+    website
+paths:
+  /api/enquiry:
+    post:
+      summary: Submit a business enquiry
+      operationId: submitEnquiry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnquiryRequest'
+      responses:
+        '201':
+          description: Enquiry submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnquiryResponse'
+        '400':
+          description: Bad request - missing or invalid parameters (including spam
+            detection)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/health:
+    get:
+      summary: Health check endpoint
+      operationId: getHealth
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+components:
+  schemas:
+    EnquiryRequest:
+      type: object
+      required:
+      - fullName
+      - companyName
+      - businessEmail
+      - phoneNumber
+      - industry
+      - requiredHerb
+      - productForm
+      - estimatedQuantity
+      - requiredSpecifications
+      - additionalMessage
+      properties:
+        fullName:
+          type: string
+          minLength: 1
+          maxLength: 100
+          example: John Doe
+          description: Full name of the enquirer
+        companyName:
+          type: string
+          minLength: 1
+          maxLength: 200
+          example: ABC Herbals Private Limited
+          description: Name of the company making the enquiry
+        businessEmail:
+          type: string
+          format: email
+          example: procurement@abcherbals.com
+          description: Official business email address
+        phoneNumber:
+          type: string
+          minLength: 10
+          maxLength: 20
+          example: +91 9876543210
+          description: Contact phone number with country code
+        industry:
+          type: string
+          enum:
+          - Ayurveda
+          - Nutraceuticals
+          - Cosmetics
+          - Herbal Teas
+          - Botanical Extracts
+          - Herbal Wellness Brands
+          - Other
+          example: Ayurveda
+          description: Industry sector of the enquirer
+        requiredHerb:
+          type: string
+          minLength: 1
+          maxLength: 100
+          example: Ashwagandha
+          description: Specific herb required for enquiry
+        productForm:
+          type: string
+          enum:
+          - Cleaned and Graded Whole Herbs
+          - Cut and Sifted Herbs
+          - Herbal Powders
+          example: Herbal Powders
+          description: Desired processing form of the herb
+        estimatedQuantity:
+          type: string
+          minLength: 1
+          example: 100 kg
+          description: Estimated quantity required (with unit)
+        requiredSpecifications:
+          type: string
+          minLength: 1
+          example: Moisture <5%, Ash value <10%
+          description: Specific quality specifications required
+        additionalMessage:
+          type: string
+          minLength: 1
+          maxLength: 500
+          example: Looking for a long-term supplier with batch-level traceability.
+          description: Any additional requirements or messages
+      example:
+        fullName: Priya Sharma
+        companyName: Herbalife Formulations
+        businessEmail: priya.sharma@herbalife.in
+        phoneNumber: +91 98765 43210
+        industry: Ayurveda
+        requiredHerb: Amla
+        productForm: Herbal Powders
+        estimatedQuantity: 500 kg
+        requiredSpecifications: Moisture content ≤5%, Vitamin C ≥40%
+        additionalMessage: Require monthly supply for next 6 months with COA for each
+          batch.
+    EnquiryResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Your enquiry has been submitted successfully. Our team will contact
+            you within 24 hours.
+          description: Confirmation message
+        enquiryId:
+          type: integer
+          example: 1024
+          description: Unique identifier for the submitted enquiry
+      required:
+      - message
+      - enquiryId
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+          example: 'Validation error: fullName is required'
+          description: Error description
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            type: object
+            properties:
+              loc:
+                type: array
+                items:
+                  type: string
+              msg:
+                type: string
+              type:
+                type: string

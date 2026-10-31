@@ -1,0 +1,146 @@
+[
+  {
+    "stage_id": "T1",
+    "agent": "backend",
+    "instructions": "Initialize FastAPI project, configure SQLite with SQLAlchemy, create Enquiry table (id, fullName, companyName, businessEmail, phoneNumber, industry, requiredHerb, productForm, estimatedQuantity, requiredSpecifications, additionalMessage, createdAt). Implement GET /api/health returning {status: 'ok'}. Add CORS middleware allowing Vercel domain.",
+    "contract_ref": "contract/openapi.yaml",
+    "files_allowed": [
+      "backend/main.py",
+      "backend/database.py",
+      "backend/models.py",
+      "backend/schemas.py",
+      "backend/alembic/versions/*"
+    ],
+    "failed_attempts": 0,
+    "reviewer_failures": [],
+    "budget_context": {}
+  },
+  {
+    "stage_id": "T2",
+    "agent": "backend",
+    "instructions": "Create route POST /api/enquiry accepting JSON body matching EnquiryRequest schema. Validate required fields, email format, phone length, enum values. Insert record into SQLite, return 201 with {message, enquiryId}. On validation failure return 422 with detail; on spam detection (honeypot field present) return 400. Include logging.",
+    "contract_ref": "contract/openapi.yaml",
+    "files_allowed": [
+      "backend/routers/enquiry.py",
+      "backend/main.py (router inclusion)",
+      "backend/schemas.py"
+    ],
+    "failed_attempts": 0,
+    "reviewer_failures": [],
+    "budget_context": {}
+  },
+  {
+    "stage_id": "T3",
+    "agent": "frontend",
+    "instructions": "Set up Next.js with App Router, TypeScript, Tailwind config using Herbotech colour palette and fonts (Playfair Display, Inter, IBM Plex Sans). Create global.css with base styles. Build reusable UI components: Button (variant props), Input/Textarea, Card, Modal, Layout container, Spinner, HeroSection. Ensure components accept className overrides and are accessible (focus outlines, ARIA). Write Storybook‑style examples (optional) and export via components/index.ts.",
+    "contract_ref": "contract/openapi.yaml",
+    "files_allowed": [
+      "frontend/**/*.tsx",
+      "frontend/**/*.ts",
+      "frontend/styles/globals.css",
+      "frontend/tailwind.config.ts",
+      "frontend/tsconfig.json",
+      "frontend/eslint.config.js"
+    ],
+    "failed_attempts": 0,
+    "reviewer_failures": [],
+    "budget_context": {}
+  },
+  {
+    "stage_id": "T4",
+    "agent": "frontend",
+    "instructions": "Create Header component with logo, nav links (Home, About, Products, Processing, Quality, Infrastructure, Sustainability, Contact), sticky behaviour, background transition on scroll, and prominent 'Request a Quote' CTA. Implement mobile drawer with animation using Framer Motion. Footer with quick links, services, placeholders for socials. Build Layout wrapper that provides SEO defaults (title, description) via useEffect/Header tags. Configure app/router with routes for all pages. Enable theme context for dark‑forest‑green sections.",
+    "contract_ref": "contract/openapi.yaml",
+    "files_allowed": [
+      "frontend/app/layout.tsx",
+      "frontend/app/header.tsx",
+      "frontend/app/footer.tsx",
+      "frontend/app/theme-provider.tsx",
+      "frontend/app/**/layout.tsx (route groups)",
+      "frontend/components/nav/*.tsx",
+      "frontend/components/drawer.tsx"
+    ],
+    "failed_attempts": 0,
+    "reviewer_failures": [],
+    "budget_context": {}
+  },
+  {
+    "stage_id": "T5",
+    "agent": "frontend",
+    "instructions": "Build Home page implementing all sections described: hero with overlay, intro split layout, capabilities grid (5 items with photo/icon/description/hover), product portfolio grid (initial herbs with cards, 'Enquire About This Herb' button opening modal), quality philosophy section with workflow diagram, 'How we work' process timeline, infrastructure showcase, differentiation blocks, industries grid, partnership CTA dark section, and footer. About Us page with vision, mission, philosophy, regional description, and editorial photography. Use reusable components from UI kit, apply proper heading hierarchy, add framer‑motion scroll triggers and hover animations. Ensure all images have descriptive alt text and are optimized.",
+    "contract_ref": "contract/openapi.yaml",
+    "files_allowed": [
+      "frontend/app/page.tsx",
+      "frontend/app/about/page.tsx",
+      "frontend/components/hero.tsx",
+      "frontend/components/capabilities-grid.tsx",
+      "frontend/components/product-card.tsx",
+      "frontend/components/product-enquiry-modal.tsx",
+      "frontend/components/quality-philosophy.tsx",
+      "frontend/components/process-timeline.tsx",
+      "frontend/components/infrastructure-showcase.tsx",
+      "frontend/components/why-choose-blocks.tsx",
+      "frontend/components/industries-grid.tsx",
+      "frontend/components/partnership-cta.tsx"
+    ],
+    "failed_attempts": 0,
+    "reviewer_failures": [],
+    "budget_context": {}
+  },
+  {
+    "stage_id": "T6",
+    "agent": "frontend",
+    "instructions": "Products page: search bar (free‑text), filter controls for category (Whole, Cut & Sifted, Powder) and form, product grid using product cards, pagination or load‑more, each card shows image, common name, botanical name (if verified), forms, short description, enquiry button. Clicking card expands detail view or modal with more info (applications, forms, enquiry CTA). Processing Capabilities page: layout explaining ten unit operations (receiving, inspection, cleaning, drying, cutting, grinding, sieving, testing, packing, dispatch); each operation has purpose, equipment photo, importance paragraph. Use same UI kit, apply framer‑motion for staggered reveal of operations. Ensure responsiveness and accessibility.",
+    "contract_ref": "contract/openapi.yaml",
+    "files_allowed": [
+      "frontend/app/products/page.tsx",
+      "frontend/app/products/[slug]/page.tsx (optional detail route)",
+      "frontend/app/processing/page.tsx",
+      "frontend/components/product-search-filter.tsx",
+      "frontend/components/product-grid.tsx",
+      "frontend/components/product-detail-modal.tsx",
+      "frontend/components/processing-operation-card.tsx"
+    ],
+    "failed_attempts": 0,
+    "reviewer_failures": [],
+    "budget_context": {}
+  },
+  {
+    "stage_id": "T7",
+    "agent": "frontend",
+    "instructions": "Quality Assurance page: explain incoming inspection, botanical ID, moisture, foreign matter, ash values, extractives, TLC, external lab arrangements. Show illustrative COA modal/table with sample data and clear 'SAMPLE / ILLUSTRATIVE' watermark. Include batch traceability flow diagram. Infrastructure page: present planned facility layout diagram, sections (raw material storage, processing hall, finished goods storage, QC lab, office, drying yard) with equipment photos and captions, clearly marking as conceptual/planned. Sustainability page: outline responsible sourcing, waste reduction, efficient drying, storage, potential farmer collaborations. Use UI kit, apply consistent section styling, add framer‑motion reveals, ensure accessibility and semantic markup.",
+    "contract_ref": "contract/openapi.yaml",
+    "files_allowed": [
+      "frontend/app/quality/page.tsx",
+      "frontend/app/infrastructure/page.tsx",
+      "frontend/app/sustainability/page.tsx",
+      "frontend/components/coa-demo.tsx",
+      "frontend/components/batch-traceability.tsx",
+      "frontend/components/facility-layout.tsx",
+      "frontend/components/infrastructure-section.tsx",
+      "frontend/components/sustainability-points.tsx"
+    ],
+    "failed_attempts": 0,
+    "reviewer_failures": [],
+    "budget_context": {}
+  },
+  {
+    "stage_id": "T8",
+    "agent": "frontend",
+    "instructions": "Contact Us page: display company name, address, embedded Google Map iframe (placeholder for coordinates), and a detailed Request a Quote form with fields: fullName, companyName, businessEmail, phoneNumber, industry (select), requiredHerb (text), productForm (select), estimatedQuantity (text), requiredSpecifications (textarea), additionalMessage (textarea), plus hidden honeypot field. Implement client‑side validation (required, email, min lengths) using React Hook Form or similar, show inline errors. On submit, show spinner, call POST /api/enquiry, on success display thank‑you message and reset form, on error show appropriate message. On component mount, call GET /api/health and display subtle API status indicator (e.g., small badge). Add next‑export sitemap generation, robots.txt, and open graph meta tags via metadata.js. Run final TypeScript check, ESLint, audit with axe-core for WCAG AA, verify Lighthouse performance >90 and accessibility >90. Prepare for Vercel deployment (vercel.json, env var placeholders).",
+    "contract_ref": "contract/openapi.yaml",
+    "files_allowed": [
+      "frontend/app/contact/page.tsx",
+      "frontend/components/contact-form.tsx",
+      "frontend/components/map-placeholder.tsx",
+      "frontend/app/layout.tsx (metadata for SEO)",
+      "frontend/sitemap.xml.js",
+      "frontend/robots.txt.js",
+      "frontend/vercel.json",
+      "frontend/.env.example"
+    ],
+    "failed_attempts": 0,
+    "reviewer_failures": [],
+    "budget_context": {}
+  }
+]
